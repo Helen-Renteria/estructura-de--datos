@@ -39,7 +39,7 @@ int registro(){
          free(auxiliar2);
 }
 return 0;
-
+ 
 }
 
 int mostrar(){

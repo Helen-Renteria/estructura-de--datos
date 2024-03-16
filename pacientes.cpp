@@ -6,6 +6,7 @@ struct pacientes
 {
     int valor = 0;
     char nombre[30];
+    int edad = 0; 
     pacientes *siguiente;
    
 };
@@ -22,6 +23,8 @@ int registro(){
         cin>>cabeza->nombre;
         cout<<"Ingrese el documento del paciente: ";
         cin>>cabeza->valor;
+        cout<<"Ingrese la edad del paciente: ";
+        cin>>cabeza->edad;
         cabeza->siguiente=NULL;
     }else{
          auxiliar1=(struct pacientes *)malloc(sizeof(struct pacientes));
@@ -29,6 +32,8 @@ int registro(){
          cin>>auxiliar1->nombre;
          cout<<"Ingrese el documento del paciente: ";
         cin>>auxiliar1->valor;
+        cout<<"Ingrese la edad del paciente: ";
+        cin>>auxiliar1 ->edad;
          auxiliar1->siguiente=NULL;
          auxiliar2=cabeza;
          while(auxiliar2->siguiente!=NULL)
@@ -47,14 +52,18 @@ int mostrar(){
     for (auxiliar1=cabeza;auxiliar1!=NULL;auxiliar1=auxiliar1->siguiente){
         cout<<"NOMBRE DEL PACIENTE: "<<auxiliar1->nombre<<endl;
         cout<<"DOCUMENTO DEL PACIENTE: "<<auxiliar1->valor<<endl;
+        cout<<"EDAD DEL PACIENTE: "<<auxiliar1->edad<<endl;
+        
         
     }
     
         return 0;
     }
 
+
+
 int main(){
-string nombre;
+
 
         int opcion=0;
 
@@ -65,6 +74,7 @@ string nombre;
             cout<<"              1. REGISTRAR PACIENTE"<<endl;
             cout<<"                2. VER PACIENTES"<<endl;
             cout<<"                3. SALIR DEL MENU"<<endl;
+            
             cin>>opcion;
 
             switch(opcion){

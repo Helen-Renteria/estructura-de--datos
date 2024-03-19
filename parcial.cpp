@@ -1,4 +1,101 @@
-nodo* anterior=NULL;
+#include <iostream>
+#include <malloc.h>
+
+using namespace std;
+
+struct Producto {
+    int id;
+    char nombre[50];
+    int cantidad;
+    int precio;
+}; 
+
+struct nodo
+{
+  Producto producto;
+  nodo* siguiente;
+};
+
+nodo* a=NULL;
+nodo* b=NULL;
+
+int registar(){
+    nodo* cabeza=(struct nodo*)malloc(sizeof(struct nodo));
+
+    cout<<"\nIngrese el ID del producto a registrar: ";
+    cin>>cabeza->producto.id;
+
+    cout<<"Ingrese el nombre del producto: ";
+    cin>>cabeza->producto.nombre;
+
+    cout<<"Ingrese la cantidad: ";
+    cin>>cabeza->producto.cantidad;
+
+    cout<<"Ingrese el precio por unidad del producto: ";
+    cin>>cabeza->producto.precio;
+
+    cabeza->siguiente=NULL;
+
+    if (b==NULL)
+    {
+        a=b=cabeza;
+    }else{
+        b->siguiente=cabeza;
+        b=cabeza;
+    }
+    
+    
+cout<<"El producto se registro exitosamente.\n";
+
+return 0;
+}
+
+int mostrar(){
+    nodo* produc=a;
+
+    if(produc==NULL){
+        cout<<"\nNo hay inventario.\n";
+    
+    }
+
+    cout<<"\n----------BIENVENIDO AL INVENTARIO----------\n";
+    while (produc!=NULL)
+    {
+        cout<<"ID: "<<produc->producto.id<<", Nombre: "<<produc->producto.nombre<<", Cantida: "<<produc->producto.cantidad<<", Precio por unidad del producto: "<<produc->producto.precio<< endl;
+        produc=produc->siguiente;
+    }
+
+    return 0;
+}
+
+int buscarPro(int id){
+    nodo* produc=a;
+    bool encontrar=false;
+
+    while (produc!=NULL)
+    {
+        if (produc->producto.id==id)
+        {
+            cout<<"Producto encontrado con exito: "<<endl;
+            cout<<"ID: "<<produc->producto.id<<", Nombre: "<<produc->producto.nombre<<", Cantida: "<<produc->producto.cantidad<<", Precio por unidad del producto: "<<produc->producto.precio<< endl;
+            encontrar=true;
+            break;
+        }
+        
+        produc=produc->siguiente;
+    }
+
+    if(!id){
+        cout<<"PRODUCTO NO ENCONTRADO. :(";
+    }
+
+    return 0;
+    
+}
+
+int eliminarPro(int id){
+    nodo* produc=a;
+    nodo* anterior=NULL;
     bool encontrar=false;
 
     while (produc!=NULL)
@@ -87,7 +184,7 @@ int vender(){
             {
                 encontrar=true;
 
-                cout << "*Informacion del producto:*" << endl;
+                cout << "**Informacion del producto:**" << endl;
       cout << "ID: " << produc->producto.id << endl;
       cout << "Nombre: " << produc->producto.nombre << endl;
       cout << "Cantidad disponible: " << produc->producto.cantidad << endl;

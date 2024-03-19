@@ -1,99 +1,4 @@
-#include <iostream>
-#include <malloc.h>
-
-using namespace std;
-
-struct Producto {
-    int id;
-    char nombre[50];
-    float cantidad;
-    float precio;
-};
-
-struct nodo
-{
-  Producto producto;
-  nodo* siguiente;
-};
-
-nodo* a=NULL;
-nodo* b=NULL;
-
-int registar(){
-    nodo* cabeza=(nodo*)malloc(sizeof(nodo));
-
-    cout<<"\nIngrese el ID del producto a registrar: ";
-    cin>>cabeza->producto.id;
-
-    cout<<"Ingrese el nombre del producto: ";
-    cin>>cabeza->producto.nombre;
-
-    cout<<"Ingrese la cantidad: ";
-    cin>>cabeza->producto.cantidad;
-
-    cout<<"Ingrese el precio por unidad del producto: ";
-    cin>>cabeza->producto.precio;
-
-    cabeza->siguiente=NULL;
-
-    if (b==NULL)
-    {
-        a=b=cabeza;
-    }else{
-        b->siguiente=cabeza;
-        b=cabeza;
-    }
-    
-    
-cout<<"El producto se registro exitosamente.\n";
-
-return 0;
-}
-
-int mostrar(){
-    nodo* produc=a;
-
-    if(produc==NULL){
-        cout<<"\nNo hay inventario.\n";
-    
-    }
-
-    cout<<"\n----------BIENVENIDO AL INVENTARIO----------\n";
-    while (produc!=NULL)
-    {
-        cout<<"ID: "<<produc->producto.id<<", Nombre: "<<produc->producto.nombre<<", Cantida: "<<produc->producto.cantidad<<", Precio por unidad del producto: "<<produc->producto.precio<< endl;
-        produc=produc->siguiente;
-    }
-     return 0;
-}
-
-int buscarPro(int id){
-    nodo* produc=a;
-    bool encontrar=false;
-
-    while (produc!=NULL)
-    {
-        if (produc->producto.id==id)
-        {
-            cout<<"Producto encontrado con exito: "<<endl;
-            cout<<"ID: "<<produc->producto.id<<", Nombre: "<<produc->producto.nombre<<", Cantidad: "<<produc->producto.cantidad<<", Precio por unidad del producto: "<<produc->producto.precio<< endl;
-            encontrar=true;
-            break;
-        }
-        
-        produc=produc->siguiente;
-    }
-
-    if(!encontrar){
-        cout<<"PRODUCTO NO ENCONTRADO. :(";
-    }
-     return 0;
-    
-}
-
-int eliminarPro(int id){
-    nodo* produc=a;
-    nodo* anterior=NULL;
+nodo* anterior=NULL;
     bool encontrar=false;
 
     while (produc!=NULL)
@@ -124,14 +29,14 @@ int eliminarPro(int id){
         {
             cout<<"EL PRODUCTO A ELIMINAR NO SE ENCUENTRA REGISTRADO. :("<<endl;
         }
-         return 0;
     
+    return 0;
 
 }
 
 int calcularValorInventario(){
     nodo* produc=a;
-    double total=0;
+    int total=0;
 
     while (produc!=NULL)
     {
@@ -140,15 +45,16 @@ int calcularValorInventario(){
     }
 
     cout<<"El valor total del inventario es: "<<total<<endl;
-     return 0;
-}
 
+    return 0;
+    
+}
 
 int calcularPromedioPrecios(){
     nodo* produc=a;
-    double totalPrecio=0;
-    double totalCantidad=0;
-    double promedio=0;
+    int totalPrecio=0;
+    int totalCantidad=0;
+    int promedio=0;
 
     while (produc!=NULL)
     {
@@ -159,11 +65,12 @@ int calcularPromedioPrecios(){
 
     promedio=totalPrecio/totalCantidad;
     cout<<"Precio promedio por unidad: "<<promedio<<endl;
-     return 0;
+
+    return 0;
 }
 
 int vender(){
-    float idVenta, cantidadVenta;
+    int idVenta, cantidadVenta;
     nodo* produc=a;
     bool encontrar=false;
 
@@ -178,7 +85,15 @@ int vender(){
         if(produc->producto.id==idVenta){
             if (produc->producto.cantidad>=cantidadVenta)
             {
-                float totalVenta=cantidadVenta*produc->producto.precio;
+                encontrar=true;
+
+                cout << "*Informacion del producto:*" << endl;
+      cout << "ID: " << produc->producto.id << endl;
+      cout << "Nombre: " << produc->producto.nombre << endl;
+      cout << "Cantidad disponible: " << produc->producto.cantidad << endl;
+      cout << "Precio por unidad: " << produc->producto.precio << endl;
+
+                int totalVenta=cantidadVenta*produc->producto.precio;
                 produc->producto.cantidad-=cantidadVenta;;
                 cout<<"Venta realizada. Su total a pagar es: "<<totalVenta<<endl;
             }else{
@@ -195,7 +110,8 @@ int vender(){
     {
         cout<<"El producto no se encuentra disponible para la venta. :(";
     }
-     return 0;
+    
+    return 0;
     
     }
 
@@ -252,7 +168,5 @@ int vender(){
 
         }while (opc!=8);
        
-        
-        
-        
+        return 0;
     }

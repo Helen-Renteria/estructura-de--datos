@@ -85,7 +85,7 @@ int buscarPro(int id){
         produc=produc->siguiente;
     }
 
-    if(!id){
+    if(!encontrar){
         cout<<"PRODUCTO NO ENCONTRADO. :(";
     }
 
@@ -211,6 +211,7 @@ int vender(){
     return 0;
     
     }
+
 
     int main(){
         int opc=0;

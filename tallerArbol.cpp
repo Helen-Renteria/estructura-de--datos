@@ -1,319 +1,576 @@
 #include<iostream>
-#include<conio.h>
-#include<stdlib.h>
-
+#include<malloc.h>
+#include <string>
+#include <cstring> // biblioteca para copiar la cadena de caracteres
+//char* strcpy(char* destino, const char* origen);
 using namespace std;
 
-struct Nodo{
-    int dato, naci;
-    Nodo *der;
-    Nodo *izq;
-    Nodo *padre;
-    char nombre[50], apellido[50];
+struct nodo{
+    int codigo;
+    char nombre[30];
+    char apellido[30]; 
+    int AA;
+    int MM;
+    int DD; 
+    nodo *izq;
+    nodo *der;
 };
 
-//Prototipos
-void menu();
+nodo *raiz=NULL, *aux=NULL, *aux2=NULL,*raiz2=NULL, *aux5=NULL, *nuevoNodoC=NULL, *nuevoNodoF=NULL;
 
-Nodo *crearEstudiante(int, Nodo *);
+int posicionarC(){
+    if (nuevoNodoC->codigo < aux2->codigo){
+        if(aux2->izq!=NULL){
+            aux2 = aux2->izq;
+            posicionarC();
+        }
+        else {
+            aux2->izq = nuevoNodoC;
+        } 
+        
+    }
+    else if (nuevoNodoC ->codigo > aux2->codigo){
+        if(aux2->der!=NULL){
+            aux2 = aux2->der;
+            posicionarC();
+    }
+        else {
+        aux2->der = nuevoNodoC;
+        }
 
-void insertarEstudiante(Nodo *&, int, char*, char*, int, Nodo *);
+    }
+    return 0; 
+}
 
-void mostrarEstudiantes(Nodo *, int, char*, char*, int, Nodo *);
+int posicionarF(){
+    if (nuevoNodoF->AA < aux5->AA){
+        if(aux5->izq!=NULL){
+            aux5 = aux5->izq;
+            posicionarF();
+        }
+        else {
+            aux5->izq = nuevoNodoF; 
+        } 
+    }
+    else if (nuevoNodoF->AA > aux5->AA){
+        if(aux5->der!=NULL){
+            aux5 = aux5->der;
+            posicionarF();
+    }
+        else {
+        aux5->der = nuevoNodoF;
+        }
 
-bool busqueda(Nodo *, int);
+    }
+     else{
+        //si los años son iguales, comparamos el mes
+        if (nuevoNodoF->MM < aux5->MM){
+        if(aux5->izq!=NULL){
+            aux5 = aux5->izq;
+            posicionarF();
+        }
+        else {
+            aux5->izq = nuevoNodoF; 
+        } 
+    }
+    else if (nuevoNodoF->MM > aux5->MM){
+        if(aux5->der!=NULL){
+            aux5 = aux5->der;
+            posicionarF();
+    }
+        else {
+        aux5->der = nuevoNodoF;
+        }
 
-void preOrden(Nodo *);
+    }else{
+        // si el año y mes son iguales comparamos por dia 
+        if (nuevoNodoF->DD < aux5->DD){
+        if(aux5->izq!=NULL){
+            aux5 = aux5->izq;
+            posicionarF();
+        }
+        else {
+            aux5->izq = nuevoNodoF; 
+        } 
+    }
+    else {
+        // sie l dia es igual o mayor insertamos a la derecha
+        if(aux5->der!=NULL){
+            aux5 = aux5->der;
+            posicionarF();
+    }
+        else {
+        aux5->der = nuevoNodoF;
+        }
+    }
+    }
+    }
+    
+    return 0; 
+}
+int registrarC(){
+   
+    //creamos variables temporales para guardar los datos
+    int codigoIngresado;
+    string nombreIngresado;
+    string apellidoIngresado;
+    int AAIngresado=0, MMIngresado=0, DDIngresado=0; 
+    
+    cout<<" ingrese su codigo: "<<endl;
+    cin>>codigoIngresado;
+    cout<<" ingrese su nombre: "<<endl;
+    cin.ignore(); // Limpiar el buffer de entrada
+    getline(cin, nombreIngresado);
+    cout<<" ingrese su apellido: "<<endl;
+    getline(cin, apellidoIngresado);
+    cout<<" ingrese su fecha de nacimiento "<<endl;
+    cout<<" AA: "<<endl;
+    cin>>AAIngresado;
+    cout<<" MES: "<<endl;
+    cin>>MMIngresado;
+    cout<<" DIA: "<<endl;
+    cin>>DDIngresado;
+    cin.ignore();
+    
+   //guardamos los datos a los apuntadores por fecha y por codigo
+   
 
-void inOrden(Nodo *);
+   //fecha  
+   nuevoNodoF = (struct nodo *) malloc(sizeof(struct nodo));
+   nuevoNodoF->AA = AAIngresado;
+   nuevoNodoF->MM = MMIngresado;
+   nuevoNodoF->DD = DDIngresado;
+   nuevoNodoF->codigo = codigoIngresado;
+   strcpy( nuevoNodoF->nombre, nombreIngresado.c_str());
+   strcpy(nuevoNodoF->apellido, apellidoIngresado.c_str()); 
+  
+   nuevoNodoF->izq = nuevoNodoF->der = NULL; 
 
-void postOrden(Nodo *);
+    // organizar por fecha 
+    if(raiz2 == NULL){
+        raiz2= nuevoNodoF;
+        
+    }
+    else{
+        aux5 = raiz2; 
+        posicionarF();
 
-void eliminar(Nodo *, int);
+        
+    }
+     // organizar por codigo
+    /*strcpy() copiará los caracteres de la cadena nombreIngresado y
+     apellidoIngresado a los arrays de caracteres nuevoNodoF->nombre y 
+     nuevoNodoF->apellido respectivamente.
+    */
+    //codigo
+  nuevoNodoC = (struct nodo *) malloc(sizeof(struct nodo));
+     
+   nuevoNodoC->codigo = codigoIngresado;
+   strcpy( nuevoNodoC->nombre, nombreIngresado.c_str());
+   strcpy(nuevoNodoC->apellido, apellidoIngresado.c_str());
+   nuevoNodoC->AA = AAIngresado;
+   nuevoNodoC->MM = MMIngresado;
+   nuevoNodoC->DD = DDIngresado;
+   nuevoNodoC->izq = nuevoNodoC->der = NULL; 
 
-void eliminarEstudiante(Nodo *);
+    if(raiz == NULL){
+        raiz= nuevoNodoC;
+        
+    }
+    else{
+        aux2 = raiz; 
+        posicionarC();
+        
+    }     
 
-Nodo*minimo(Nodo *);
+     return 0; 
+}
 
-void reemplazar(Nodo* , Nodo *);
+    
+ int preOrden( nodo *aux3){
+    cout<<"codigo: "<<aux3->codigo<<endl;
+    cout<<"nombre: "<<aux3->nombre<<endl;
+    cout<<"apellido: "<<aux3->apellido<<endl;
+    cout<<"fecha de nacimiento: "<<endl;
+    cout<<" AA: "<<aux3->AA<<endl;
+    cout<<" MES: "<<aux3->MM<<endl;
+    cout<<" DIA: "<<aux3->DD<<endl;
 
-void destruirEstudiante(Nodo *);
+    if (aux3-> izq!=NULL){
+    preOrden(aux3->izq);
+    }
+    if (aux3-> der!=NULL){  
+    preOrden(aux3->der);
+    }
+    return 0;
+ }
+ 
 
-Nodo *arbol=NULL;
+ int inOrden( nodo *aux3){
+    if (aux3-> izq!=NULL){
+     inOrden(aux3->izq);
+    }
+    cout<<"codigo: "<<aux3->codigo<<endl;
+    cout<<"nombre: "<<aux3->nombre<<endl;
+    cout<<"apellido: "<<aux3->apellido<<endl;
+    cout<<"fecha de nacimiento: "<<endl;
+    cout<<" AA: "<<aux3->AA<<endl;
+    cout<<" MES: "<<aux3->MM<<endl;
+    cout<<" DIA: "<<aux3->DD<<endl;
+    if(aux3-> der!=NULL){
+     inOrden(aux3->der);
+    }
+
+    return 0;
+ }
+  int postOrden( nodo *aux3){
+    if (aux3-> izq!=NULL){
+    postOrden(aux3->izq);
+    }
+    if (aux3-> der!=NULL){
+    postOrden(aux3->der);
+    }
+    cout<<"codigo: "<<aux3->codigo<<endl;
+    cout<<"nombre: "<<aux3->nombre<<endl;
+    cout<<"apellido: "<<aux3->apellido<<endl;
+    cout<<"fecha de nacimiento: "<<endl;
+    cout<<" AA: "<<aux3->AA<<endl;
+    cout<<" MES: "<<aux3->MM<<endl;
+    cout<<" DIA: "<<aux3->DD<<endl;
+
+    return 0;
+ }
+
+int ubicar(nodo *aux3, int aguja){
+    if (aux3->codigo == aguja ){
+        nuevoNodoC = aux3;
+        return 1;
+    }
+    else{
+        if(aux3->izq!=NULL){
+            ubicar(aux3->izq, aguja);
+        }
+        if(aux3->der!=NULL){
+            ubicar(aux3->der, aguja); 
+        }
+    }
+
+return 0;
+}
+
+int ubicarF(nodo *aux3, int aguja){
+    if (aux3->codigo == aguja ){
+        nuevoNodoF = aux3;
+        return 1;
+    }
+    else{
+        if(aux3->izq!=NULL){
+            ubicarF(aux3->izq, aguja);
+        }
+        if(aux3->der!=NULL){
+            ubicarF(aux3->der, aguja); 
+        }
+    }
+
+return 0;
+}
 
 
 
-int main(){
 
-    menu();
+int ubicarPadre(nodo *padre){
+    if ((padre-> izq!=NULL) && (padre->izq!=nuevoNodoC)){
+       ubicarPadre(padre->izq);
+    }
+    if(padre->izq == nuevoNodoC){
+        aux2 = padre; 
+    }
+    if ((padre-> der!=NULL)&& (padre->der!=nuevoNodoC)){
+       ubicarPadre(padre->der);
+    }
+    if(padre->der == nuevoNodoC){
+        aux2= padre; 
+    }
+    return 0; 
+    
+}
 
+int ubicarPadreF(nodo *padre){
+    if ((padre-> izq!=NULL) && (padre->izq!=nuevoNodoF)){
+       ubicarPadreF(padre->izq);
+    }
+    if(padre->izq == nuevoNodoF){
+        aux5 = padre; 
+    }
+    if ((padre-> der!=NULL)&& (padre->der!=nuevoNodoF)){
+       ubicarPadreF(padre->der);
+    }
+    if(padre->der == nuevoNodoF){
+        aux5= padre; 
+    }
+    return 0; 
+    
+}
 
-    getch();
+//cuando no tiene hijos
+int casoUno(){
+    if( nuevoNodoC!=raiz){
+    ubicarPadre(raiz);
+    } 
+    if(aux2->izq==nuevoNodoC){
+        aux2->izq =NULL;
+    }
+    else if (aux2->der==nuevoNodoC){
+        aux2->der = NULL;
+    }
+    free(nuevoNodoC); 
+    return 0;
+
+}
+
+int casoUnoF(){
+    if( nuevoNodoF!=raiz2){
+    ubicarPadreF(raiz2);
+    } 
+    if(aux5->izq==nuevoNodoF){
+        aux5->izq =NULL;
+    }
+    else if (aux5->der==nuevoNodoF){
+        aux5->der = NULL;
+    }
+    free(nuevoNodoF); 
     return 0;
 }
 
-//Funcion de menu
-void menu(){
-    int dato, opcion, contador=0, naci;
-    char nombre[50], apellido[50];
-   
-    
+// cuando tiene un hijo
+int casoDos(){
+    if( nuevoNodoC!=raiz){
+     ubicarPadreF(raiz);
+    } 
+   if(aux2->izq==nuevoNodoC){
+        if(nuevoNodoC->izq!=NULL)
+          aux2->izq = nuevoNodoC->izq;
+          else if(nuevoNodoC->der!=NULL)
+           aux2->izq = nuevoNodoC->der;
+       
+    }
+    else if (aux2->der==nuevoNodoC){
+        if(nuevoNodoC->izq!=NULL)
+            aux2->der = nuevoNodoC->izq;
+          else if(nuevoNodoC->der!=NULL)
+           aux2->der = nuevoNodoC->der;
+    }
+    free(nuevoNodoC); 
+    return 0;
 
+}
+
+// cuando tiene un hijo
+int casoDosF(){
+    if( nuevoNodoF!=raiz2){
+     ubicarPadreF(raiz2);
+    } 
+   if(aux5->izq==nuevoNodoF){
+        if(nuevoNodoF->izq!=NULL)
+          aux5->izq = nuevoNodoF->izq;
+          else if(nuevoNodoF->der!=NULL)
+           aux5->izq = nuevoNodoF->der;
+       
+    }
+    else if (aux5->der==nuevoNodoF){
+        if(nuevoNodoF->izq!=NULL)
+            aux5->der = nuevoNodoF->izq;
+          else if(nuevoNodoF->der!=NULL)
+           aux5->der = nuevoNodoF->der;
+    }
+    free(nuevoNodoF); 
+    return 0;
+
+}
+
+int casoTres(){
+    nodo* padre= nuevoNodoC;
+    nodo *sucesor = nuevoNodoC->der;
+    //buscamos el sucesor 
+    while(sucesor ->izq!=NULL){
+        padre = sucesor;
+        sucesor = sucesor->izq;
+    }
+    nuevoNodoC->codigo= sucesor->codigo;
+    if(padre==nuevoNodoC){
+        nuevoNodoC->der = sucesor->der; 
+    }else{
+        padre->izq = sucesor->der;
+    }
+    free(sucesor);
+    return 0; 
+}
+
+int casoTresF(){
+    nodo* padre= nuevoNodoF;
+    nodo *sucesor = nuevoNodoF->der;
+    //buscamos el sucesor 
+    while(sucesor ->izq!=NULL){
+        padre = sucesor;
+        sucesor = sucesor->izq;
+    }
+    nuevoNodoF->codigo= sucesor->codigo;
+    if(padre==nuevoNodoF){
+        nuevoNodoF->der = sucesor->der; 
+    }else{
+        padre->izq = sucesor->der;
+    }
+    free(sucesor);
+    return 0; 
+}
+
+int eliminarNodo(){
+    int buscar, buscar2;
+    cout<<"Digite el codigo de el estudiante que desea eliminar"<<endl;
+    cin>>buscar;
+    buscar2 = buscar; 
+    ubicar(raiz, buscar);
+    if ((nuevoNodoC->der == NULL)&& (nuevoNodoC->izq == NULL)){
+        casoUno();
+
+        }
+    else if(((nuevoNodoC->der == NULL)&& (nuevoNodoC->izq != NULL))||((nuevoNodoC->der != NULL)&& (nuevoNodoC->izq == NULL))){
+        casoDos();
+    }
+    else{
+        casoTres();
+    }
+
+
+    //creo que se va a eliminar por codigo tambien
+    // por fecha 
+    ubicarF(raiz2, buscar2);
+    if ((nuevoNodoF->der == NULL)&& (nuevoNodoF->izq == NULL)){
+        casoUnoF();
+
+        }
+        
+    else if(((nuevoNodoF->der == NULL)&& (nuevoNodoF->izq != NULL))||((nuevoNodoF->der != NULL)&& (nuevoNodoF->izq == NULL))){
+        casoDosF();
+    }
+    else{
+        casoTresF();
+    }
+    return 0; 
+}
+
+int main(){
+    int opc;
     do{
-        cout<<"\t.:MENU:."<<endl;
-        cout<<"1. Insertar un nuevo estudiante"<<endl;
-        cout<<"2. Mostrar arbol completo"<<endl;
-        cout<<"3. Buscar un estudiante en el arbol"<<endl;
-        cout<<"4. Recorrer el arbol en pre-Orden"<<endl;
-        cout<<"5. Recorrer el arbol en in-Orden"<<endl;
-        cout<<"6. Recorrer el arbol en post-Orden"<<endl;
-        cout<<"7. Eliminar un estudiante del arbol"<<endl;
-        cout<<"8. Salir"<<endl;
-        cout<<"OPCION: ";
-        cin>>opcion;
-
-        switch (opcion)
+        cout<<"1. registrar Estudiante"<<endl;
+        cout<<"2. recorrer Arbol"<<endl;
+        cout<<"3. eliminar estudiante"<<endl;
+        cout<<"4. salir"<<endl; 
+        cin>>opc;
+        switch (opc)
         {
-        case 1: cout<<"\nDigite el nombre: ";
-                cin>>nombre;
-                cout<<"\nDigite el apellido: ";
-                cin>>apellido;
-                cout<<"\nDigite la fecha de nacimiento(AAAAMMDD): ";
-                cin>>naci;
-                cout<<"\nDigite el ID: ";
-                cin>>dato;
-                insertarEstudiante(arbol, dato, nombre, apellido, naci, NULL);//Insertamos un nuevo estudiante
-                cout<<"\n";
-                system("pause");
+        case 1:
+        
+
+         registrarC();
+         
             break;
 
-        case 2: cout<<"\nMostrando el arbol completo..."<<endl;
-                mostrarEstudiantes(arbol,contador, nombre, apellido, naci, NULL);
-                cout<<"\n";
-                system("pause");
-                break;
-        
-        case 3: cout<<"\nDigite el elemento a buscar: ";
-                cin>>dato;
-                if(busqueda(arbol,dato)==true){
-                    cout<<"\nElemento "<<dato<<" ha sido encontrado en el arbol"<<endl;
-                }
-                else{
-                    cout<<"\nElemento no encontrado\n";
-                }
-                cout<<"\n";
-                system("pause");
-                break;
+        case 2: 
+         int opc3; 
+        cout<<"mostrar arbol por"<<endl;
+        cout<<"1.CODIGO"<<endl;
+        cout<<"2.FECHA DE NACIMIENTO"<<endl;
+        cin>>opc3;
+        switch (opc3){
+         case 1:
+         if (raiz == NULL){
+            cout<<"el arbol esta vacio. "<<endl;
 
-        case 4: cout<<"\nRecorrido en Pre-Orden: \n";
-                preOrden(arbol);
-                cout<<"\n\n";
-                system("pause");
-                break;
-        
-        case 5: cout<<"\nRecorrido en In-Orden: \n";
-                inOrden(arbol);
-                cout<<"\n\n";
-                system("pause");
-                break;
+         }else {
+          int opc2;
+           cout<<"En que forma decea realizar el recorrido"<<endl;
+           cout<<" 1.preOrden"<<endl;
+           cout<<" 2.inOrden"<<endl;
+           cout<<" 3.postOrden"<<endl;
+           cin>>opc2; 
+               switch (opc2)
+               {
+               case 1: 
+               cout<<"PreOrden"<<endl;
+               preOrden(raiz);
+               break;
 
-        case 6: cout<<"\nRecorrido en Post-Orden: \n";
-                postOrden(arbol);
-                cout<<"\n\n";
-                system("pause");
-                break;
+               case 2: 
+               cout<<"intOrden"<<endl;
+               inOrden(raiz);
+               break;
 
-        case 7: cout<<"\nDigite el numero a eliminar: ";
-                cin>>dato;
-                eliminar(arbol,dato);
-                cout<<"\n";
-                system("pause");
+               case 3: 
+               cout<<"PostOrden"<<endl;
+               postOrden(raiz);
+               break;
+               
+               default:cout<<"opcion invalida"<<endl;
                 break;
+               }
         }
-        system("cls");
-    }while (opcion!=8);
-   
+               break;
+            
+        case 2:
+         if (raiz2 == NULL){
+            cout<<"el arbol esta vacio. "<<endl;
+
+         }else {
+            int opc4; 
+            cout<<"En que forma decea realizar el recorrido"<<endl;
+           cout<<" 1.preOrden"<<endl;
+           cout<<" 2.inOrden"<<endl;
+           cout<<" 3.postOrden"<<endl;
+           cin>>opc4; 
+               switch (opc4)
+               {
+               case 1: 
+               cout<<"PreOrden"<<endl;
+               preOrden(raiz2);
+               break;
+
+               case 2: 
+               cout<<"intOrden"<<endl;
+               inOrden(raiz2);
+               break;
+
+               case 3: 
+               cout<<"PostOrden"<<endl;
+               postOrden(raiz2);
+               break;
+               
+               default:
+               cout<<"opcion invalida"<<endl;
+                break;
+               }
+         }
+
+            break;
+          }
+
+        
     
-}
+        break;
+        case 3:
+        eliminarNodo();
+       
+          break;
 
-//Funcion para crear nuevo nodo
-Nodo *crearEstudiante(int n, Nodo *padre){
-    Nodo *nuevo_nodo=new Nodo();
-
-    nuevo_nodo->dato=n;
-    nuevo_nodo->der=NULL;
-    nuevo_nodo->izq=NULL;
-    nuevo_nodo->padre=padre;
-
-    return nuevo_nodo;
-}
-
-//Funcion para insertar elementos en el arbol
-
-void insertarEstudiante(Nodo *&arbol, int n, char nombre[], char apellido[], int naci, Nodo *padre){
-
-    if(arbol==NULL){//si el arbol esta vacip
-        Nodo * nuevo_nodo=crearEstudiante(n, padre);
-        arbol=nuevo_nodo;
-    }
-    else{//si el arbol tiene un nodo o mas
-        int valorRaiz=arbol->dato;//obtenemos el valor de la raiz
-        if(n<valorRaiz){//Si el elemento es enor a la raiz se inserta en la izquierda
-            insertarEstudiante(arbol->izq,n, nombre, apellido, naci, padre);
+          case 4:
+        cout<<"Adioss"<<endl;
+       
+          break;
+        
         }
-        else{//si el elemneto es mayor a la raiz se oinserta a la derecha
-            insertarEstudiante(arbol->der,n, nombre, apellido, naci, padre);
-        }
-    }
 
-}
-
-//Funcion para mostrar el arbol completo
-void mostrarEstudiantes(Nodo *arbol, char nombre[], char apellido[], int naci,int cont){
-    if(arbol==NULL){//Si el arbol esta vacio
-       return;
-    }
-    else{
-        mostrarEstudiantes(arbol->der, nombre, apellido, naci,cont+1);
-        for(int i=0;i<cont;i++){
-            cout<<"   ";
-        }
-        cout<<"ID: "<<arbol->dato<<endl;
-        cout<<"Nombre: "<<arbol->nombre<<endl;
-        cout<<"Apellido: "<<arbol->apellido<<endl;
-        cout<<"Fecha de nacimiento: "<<arbol->naci<<endl;
-        mostrarEstudiantes(arbol->izq,nombre, apellido, naci,cont+1); 
-    }
-}
-
-//Funcion para buscar un elemento en el arbol
-bool busqueda(Nodo *arbol, int n){
-    if(arbol==NULL){//si el arbol esta vacio
-        return false;
-    }
-    else if(arbol->dato==n){//Si el nodo es igual al elemento retorna verrdadero
-        return true;
-    }
-    else if(n<arbol->dato){
-        return busqueda(arbol->izq,n);
-    }
-    else{
-        return busqueda(arbol->der,n);
-    }
-}
-
-//Funcion para recorrer en Pre-Orden
-
-void preOrden(Nodo *arbol){
-    if(arbol==NULL){//Si el arbol esta vacio
-    return;
-    }
-    else{
-        cout<<arbol->dato<<" - ";
-        preOrden(arbol->izq);
-        preOrden(arbol->der);
-    }
-}
-
-//Funcion para recorrer en in-orden
-
-void inOrden(Nodo *arbol){
-    if(arbol==NULL){//Si el arbol esta vacio
-    return;
-    }
-    else{
-        inOrden(arbol->izq);
-        cout<<arbol->dato<<" - ";
-        inOrden(arbol->der);
-    }
-}
-
-//Funcion para recorrer en Post-Orden
-void postOrden(Nodo *arbol){
-    if(arbol==NULL){//Si el arbol esta vacio
-    return;
-    }
-    else{
-        postOrden(arbol->izq);
-        postOrden(arbol->der);
-        cout<<arbol->dato<<" - ";
-    }
-}
-
-//Funcion para eliminar
-void eliminar(Nodo *arbol, int n){
-    if(arbol==NULL){//si el arbol esta vacio
-        return;
-    }
-    else if(n<arbol->dato){//Si el valor es menor
-        eliminar(arbol->izq,n);//Busca por la izquierda
-    }
-    else if(n>arbol->dato){//Si el valor es mayor
-        eliminar(arbol->der,n);//Busca por la derecha
-    }
-    else{//Si ya encontro el valor
-        eliminarEstudiante(arbol);
-    }
-}
-
-//Funcion para determinar el nodo mas izqierdo posible
-Nodo *minimo(Nodo *arbol){
-    if(arbol==NULL){//Si el arbol esta nulo
-        return NULL;//retorna nulo
-    }
-    if(arbol->izq){//Si tiene hijo izquerdo
-        return minimo(arbol->izq);//buscamos la parte izquierda
-    }
-    else{//Si no tiene hijo izquierdo
-        return arbol;//retorna el mismo nodo
-    }
-}
-
-//Funcion para reemplazar dos nodos
-void reemplazar(Nodo *arbol, Nodo *nuevoNodo){
-     if(arbol->padre){
-         //arbol->padre hay que asignarle su nuevo hijo
-        if(arbol->dato==arbol->padre->izq->dato){
-            arbol->padre->izq=nuevoNodo;
-        }
-        else if (arbol->dato==arbol->padre->der->dato){
-            arbol->padre->der=nuevoNodo;
-        }
-      
-     }
-     if(nuevoNodo){
-        //Procedemos a asignarle su nuevo padre
-        nuevoNodo->padre=arbol->padre;
-     }
-}
-
-//Funcion para destruir un ndo
-void destruirEstudiante(Nodo *nodo){
-    nodo->izq=NULL;
-    nodo->der=NULL;
-
-    delete nodo;
-}
-
-//Funcion para eliminar el nodo encontrado
-void eliminarEstudiante(Nodo *nodoEliminar){
-    if(nodoEliminar->izq&&nodoEliminar->der){//Si tiene hijo derecho y tiene hijo izquierdo
-      Nodo *menor=minimo(nodoEliminar->der);
-      nodoEliminar->dato=menor->dato;
-      eliminarEstudiante(menor);
-    }
-    else if(nodoEliminar->izq){//Si tiene hijo izquierdo
-          reemplazar(nodoEliminar, nodoEliminar->izq);
-          destruirEstudiante(nodoEliminar);
-    }
-    else if(nodoEliminar->der){
-        reemplazar(nodoEliminar, nodoEliminar->der);
-        destruirEstudiante(nodoEliminar);
-    }
-    else{//Si el nodo no tiene hijos
-        reemplazar(nodoEliminar, NULL);
-        destruirEstudiante(nodoEliminar);
-    }
+    }while(opc!=4);
+   return 0; 
 }
 
 /* INTEGRANTES

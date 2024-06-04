@@ -85,6 +85,7 @@ int crearNodo() {
     int concatenar2; 
     aux = ((struct nodo *) malloc (sizeof(struct nodo)));
     cout<<"Ingrese el precio del viaje: "<<endl;
+    cout<<"$";
     cin>>aux->precioV;
     cout<<"Ingrese el destino del viaje: "<<endl;
     cin>>aux->destinoV;
@@ -111,7 +112,7 @@ int crearNodo() {
     stringstream(concatenar) >> concatenar2; // Convertimos el string a entero
    
     aux->identificador = concatenar2; 
-    cout<<"su identificador unico es "<< aux->identificador<<endl;
+    cout<<"Su identificador unico es: "<< aux->identificador<<endl;
     
 
 
@@ -167,17 +168,17 @@ void inOrden(struct nodo *nodo){
      inOrden(nodo->izq);
     }
 
-        cout<<"*"<<endl;
-        cout<<"Precio del viaje: "<<nodo->precioV<<endl;
+        cout<<"----------------------------------------------------"<<endl;
+        cout<<"Precio del viaje: $"<<nodo->precioV<<endl;
         cout<<"Destino del viaje: "<<nodo->destinoV<<endl;
         cout<<"Matricula de la embarcacion: "<<nodo->matriculaE<<endl;
         cout<<"Nombre de la embarcacion: "<<nodo->nombreE<<endl;
-        cout<<"AA"<<nodo->AA<<endl;
-        cout<<"MES"<<nodo->MM<<endl;
-        cout<<"DIA"<<nodo->DD<<endl;
+        cout<<"AA: "<<nodo->AA<<endl;
+        cout<<"MES: "<<nodo->MM<<endl;
+        cout<<"DIA: "<<nodo->DD<<endl;
         cout<<"Capacidad de la embarcacion: "<<nodo->capacidadE<<endl;
         cout<<"Identicicador: "<<nodo->identificador<<endl;
-        cout<<"*"<<endl;
+        cout<<"-----------------------------------------------------"<<endl;
     if(nodo->der!=NULL){
      inOrden(nodo->der);
     }
@@ -251,7 +252,7 @@ int casoUno(){
         raiz->der = NULL;
     }
     free(aux); 
-    cout<<"---elemento eliminado...."<<endl;
+    cout<<"---Elemento eliminado...."<<endl;
     return 0;
 
 }
@@ -274,7 +275,7 @@ int casoDos(){
           raiz->der = aux->der;
     }
     free(raiz); 
-    cout<<"---elemento eliminado...."<<endl;
+    cout<<"---Elemento eliminado...."<<endl;
     return 0;
 
 }
@@ -293,7 +294,7 @@ int casoTres(){
         padre->izq = sucesor->der;
     }
     free(sucesor);
-    cout<<"---elemento eliminado...."<<endl;
+    cout<<"---Elemento eliminado...."<<endl;
     return 0; 
 }
 
@@ -305,7 +306,7 @@ int casoTres(){
     ubicar(raiz, buscar);
 
       if (aux == NULL) {
-        cout << "Viaje no encontrado." << endl;
+        cout << "Viaje no encontrado. :(" << endl;
         return nodo;
     }
     if ((aux->der == NULL)&& (aux->izq == NULL)){
@@ -354,16 +355,14 @@ int casoTres(){
 
 // metodo para registrar el pasajero 
 void registrar_pasajero(nodo* RegistrarP, int identificador) {
-    char nombrePasajero[30];
     nodo* viaje = NULL; 
     buscar(RegistrarP, identificador, viaje);
-    cout<<"comprobante "<<viaje->identificador<<endl;
     
     if (viaje != NULL) {
         if (viaje->numPasajeros < viaje->capacidadE) {
             nuevoPasajero =(( struct pasajero*)malloc(sizeof( struct pasajero)));
                       
-            cout <<"ingrese el nombre del pasajero: "<<endl; 
+            cout <<"Ingrese el nombre del pasajero: "<<endl; 
             cin>>nuevoPasajero->nombre;
             nuevoPasajero->siguiente = NULL;
             if (viaje->primerPasajero == NULL) {
@@ -375,12 +374,13 @@ void registrar_pasajero(nodo* RegistrarP, int identificador) {
 
             }
             viaje->numPasajeros++;
-            cout << "\nPasajero registrado con Exito.\n";
+            cout << "Pasajero registrado con Exito."<<endl;
         } else {
-            cout << "\nNo hay capacidad disponible en este viaje.\n";
+            cout << "No hay capacidad disponible en este viaje. :("<<endl;
+            cout<< "Intente con otro..."<<endl; 
         }
     } else {
-        cout << "\nViaje no encontrado.\n";
+        cout << "Viaje no encontrado. "<<endl;
     }
 }
 
@@ -391,7 +391,7 @@ void mostrarPasajeros(nodo* viaje) {
     }
 
     pasajero* actual = viaje->primerPasajero;
-    cout << "Pasajeros registrados en el viaje " << viaje->identificador << ":" << endl;
+    cout << "PASAJEROS REGISTRADOS EN EL VIAJE  " << viaje->identificador << ":" << endl;
     while (actual != NULL) {
         cout << "- " << actual->nombre << endl;
         actual = actual->siguiente;
@@ -406,7 +406,7 @@ int main() {
     int ID;
     
     do {
-        cout<<"Menu de opciones"<<endl;
+        cout<<endl<<"---------BIENVENIDOS A VIAJES RS----------"<<endl;
         cout<<"1. Registrar un nuevo viaje."<<endl;
         cout<<"2. Listar todos los viajes"<<endl;
         cout<<"3. buscar un viaje por identificador."<<endl;
@@ -414,6 +414,7 @@ int main() {
         cout<<"5. Registrar un pasajero en un viaje."<<endl;
         cout<<"6. Listar todos los pasajeros de un viaje. "<<endl;
         cout<<"7. salir"<<endl;
+        cout<<"Digite el numero de la opcion que desea realizar"<<endl;
         cin>>opc;
         switch (opc) {
             case 1:
@@ -421,7 +422,7 @@ int main() {
                 raiz = insertar(raiz);
                 break;
             case 2:
-                cout<<"PreOrden: ";
+                cout<<endl<<"------VIAJES REGISTRADOS------ "<<endl;
                 inOrden(raiz); 
                 cout<<endl;
                 break;
@@ -430,21 +431,21 @@ int main() {
                 cin>>ID;
                 encontrado = NULL; 
                 if(buscar(raiz , ID,encontrado)){
-        cout<<""<<endl;
-        cout<<"Precio del viaje: "<<encontrado->precioV<<endl;
+        cout<<"//////////////////////////////////////////////"<<endl;
+        cout<<"Precio del viaje: $"<<encontrado->precioV<<endl;
         cout<<"Destino del viaje: "<<encontrado->destinoV<<endl;
         cout<<"Matricula de la embarcacion: "<<encontrado->matriculaE<<endl;
         cout<<"Nombre de la embarcacion: "<<encontrado->nombreE<<endl;
-        cout<<"AA"<<encontrado->AA<<endl;
-        cout<<"MES"<<encontrado->MM<<endl;
-        cout<<"DIA"<<encontrado->DD<<endl;
+        cout<<"AA: "<<encontrado->AA<<endl;
+        cout<<"MES: "<<encontrado->MM<<endl;
+        cout<<"DIA: "<<encontrado->DD<<endl;
         cout<<"Capacidad de la embarcacion: "<<encontrado->capacidadE<<endl;
         cout<<"Identicicador: "<<encontrado->identificador<<endl;
-        cout<<""<<endl;
+        cout<<"//////////////////////////////////////////////"<<endl;
                 }
 
                 else{
-                    cout<<"elemento NO encontrado"<<endl; 
+                    cout<<"Elemento NO encontrado. :("<<endl; 
                 }
                 
 
@@ -470,7 +471,7 @@ int main() {
               if (buscar(raiz, ID, encontrado)) {
                mostrarPasajeros(encontrado);
     } else {
-        cout << "Viaje no encontrado." << endl;
+        cout << "Viaje no encontrado. :(" << endl;
     }
     break;
     

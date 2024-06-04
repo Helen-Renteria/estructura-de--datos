@@ -167,7 +167,7 @@ void inOrden(struct nodo *nodo){
      inOrden(nodo->izq);
     }
 
-        cout<<"***************************************"<<endl;
+        cout<<"*"<<endl;
         cout<<"Precio del viaje: "<<nodo->precioV<<endl;
         cout<<"Destino del viaje: "<<nodo->destinoV<<endl;
         cout<<"Matricula de la embarcacion: "<<nodo->matriculaE<<endl;
@@ -175,9 +175,9 @@ void inOrden(struct nodo *nodo){
         cout<<"AA"<<nodo->AA<<endl;
         cout<<"MES"<<nodo->MM<<endl;
         cout<<"DIA"<<nodo->DD<<endl;
-        cout<<"Capacidad de la embarcacion"<<nodo->capacidadE<<endl;
+        cout<<"Capacidad de la embarcacion: "<<nodo->capacidadE<<endl;
         cout<<"Identicicador: "<<nodo->identificador<<endl;
-        cout<<"***************************************"<<endl;
+        cout<<"*"<<endl;
     if(nodo->der!=NULL){
      inOrden(nodo->der);
     }
@@ -204,7 +204,7 @@ bool buscar(nodo *arbol , int n, nodo *&encontrado){
         return buscar(arbol->der, n, encontrado);
     }  
     }
- /*   
+    
 // metodo eliminar 
 int ubicar(nodo *aux3, int aguja){
     if (aux3->identificador == aguja ){
@@ -300,7 +300,7 @@ int casoTres(){
 
  struct nodo* eliminar (struct nodo* nodo){
     int buscar;
-    cout<<"Digite el identificador de el viaje que desea eliminar"<<endl;
+    cout<<"Digite el identificador de el viaje que desea eliminar: "<<endl;
     cin>>buscar; 
     ubicar(raiz, buscar);
 
@@ -350,23 +350,22 @@ int casoTres(){
     
 }
 
-*/
+
 
 // metodo para registrar el pasajero 
 void registrar_pasajero(nodo* RegistrarP, int identificador) {
     char nombrePasajero[30];
     nodo* viaje = NULL; 
     buscar(RegistrarP, identificador, viaje);
-    cout<<"comprovante"<<viaje->identificador;
+    cout<<"comprobante "<<viaje->identificador<<endl;
     
     if (viaje != NULL) {
         if (viaje->numPasajeros < viaje->capacidadE) {
             nuevoPasajero =(( struct pasajero*)malloc(sizeof( struct pasajero)));
                       
-            cout <<"ingrese el nombre del pasajero"<<endl; 
+            cout <<"ingrese el nombre del pasajero: "<<endl; 
             cin>>nuevoPasajero->nombre;
             nuevoPasajero->siguiente = NULL;
-            cout<<"......"<<viaje->primerPasajero;
             if (viaje->primerPasajero == NULL) {
                 viaje->primerPasajero = nuevoPasajero;
                 viaje->ultimoPasajero = nuevoPasajero;
@@ -385,6 +384,19 @@ void registrar_pasajero(nodo* RegistrarP, int identificador) {
     }
 }
 
+void mostrarPasajeros(nodo* viaje) {
+    if (viaje == NULL || viaje->primerPasajero == NULL) {
+        cout << "No hay pasajeros registrados en este viaje." << endl;
+        return;
+    }
+
+    pasajero* actual = viaje->primerPasajero;
+    cout << "Pasajeros registrados en el viaje " << viaje->identificador << ":" << endl;
+    while (actual != NULL) {
+        cout << "- " << actual->nombre << endl;
+        actual = actual->siguiente;
+    }
+}
 
 
 int main() {
@@ -414,11 +426,11 @@ int main() {
                 cout<<endl;
                 break;
             case 3: 
-            cout<<"Ingrese el identificador unico del viaje que decea buscar"<<endl;
+            cout<<"Ingrese el identificador unico del viaje que decea buscar: "<<endl;
                 cin>>ID;
                 encontrado = NULL; 
                 if(buscar(raiz , ID,encontrado)){
-        cout<<"****************************************"<<endl;
+        cout<<""<<endl;
         cout<<"Precio del viaje: "<<encontrado->precioV<<endl;
         cout<<"Destino del viaje: "<<encontrado->destinoV<<endl;
         cout<<"Matricula de la embarcacion: "<<encontrado->matriculaE<<endl;
@@ -426,9 +438,9 @@ int main() {
         cout<<"AA"<<encontrado->AA<<endl;
         cout<<"MES"<<encontrado->MM<<endl;
         cout<<"DIA"<<encontrado->DD<<endl;
-        cout<<"Capacidad de la embarcacion"<<encontrado->capacidadE<<endl;
+        cout<<"Capacidad de la embarcacion: "<<encontrado->capacidadE<<endl;
         cout<<"Identicicador: "<<encontrado->identificador<<endl;
-        cout<<"****************************************"<<endl;
+        cout<<""<<endl;
                 }
 
                 else{
@@ -439,10 +451,10 @@ int main() {
                  break;
 
             case 4: 
-/*
+
             eliminar(raiz);
             break;
-            */
+            
             case 5:
              cout << "Ingrese el identificador del viaje donde desea registrar un pasajero: ";
                 cin >> ID;
@@ -451,12 +463,22 @@ int main() {
                 
                 break;
 
-            case 6: 
-             cout << "Ingrese el identificador del viaje donde desea mostrar los pasajero: ";
+            case 6:
+              cout << "Ingrese el identificador del viaje donde desea mostrar los pasajeros: ";
                 cin >> ID;
-                
-            break;
+              encontrado = NULL;
+              if (buscar(raiz, ID, encontrado)) {
+               mostrarPasajeros(encontrado);
+    } else {
+        cout << "Viaje no encontrado." << endl;
+    }
+    break;
+    
         }
     } while (opc != 7);
-    return 0;
+return 0;
 }
+ /* INTEGRANTES
+ HELEN FARINA RENTERIA RENTERIA
+ PAOLA ANDREA SINISTERRA MOSQUERA 
+ */
